@@ -17,13 +17,13 @@
       </div>
     </div>
     <div class="text-center text-black">
-      <form>
+      <form @submit.prevent>
         <div class="flex-col">
           <h1 class="text-white text-xl m-3">Select by country</h1>
           <select
             v-model="selectedCountry"
             id="selCountries"
-            class="form-select m-5 w-40"
+            class="form-select m-2 w-50"
           >
             <option
               v-for="country in countries"
@@ -33,13 +33,12 @@
               {{ country.name }}
             </option>
           </select>
-          <router-link
-            :to="{
-              name: 'Country',
-              params: { name: convertedCountry(selectedCountry.name) },
-            }"
-            >Get Data</router-link
+          <button
+            @click="checkSelected()"
+            class="block m-auto px-8 py-2 bg-green-500 hover:bg-green-900"
           >
+            Get Data
+          </button>
         </div>
       </form>
     </div>
@@ -64,7 +63,7 @@ export default {
       totalConfirmedNum: Number,
       totalDeathsNum: Number,
       lastUpdated: Date,
-      selectedCountry: String,
+      selectedCountry: "No",
       countries: [],
     };
   },
@@ -113,6 +112,20 @@ export default {
       return Text.toLowerCase()
         .replace(/ /g, "-")
         .replace(/[^\w-]+/g, "");
+    },
+    checkSelected() {
+      if (this.selectedCountry === "No") {
+        console.log(this.selectedCountry);
+        alert("Please Select a Country.");
+      } else {
+        console.log(this.selectedCountry);
+        var data = this.selectedCountry.name;
+        data = this.convertedCountry(data);
+        this.$router.push({
+          name: "Country",
+          params: { name: data },
+        });
+      }
     },
   },
 };
