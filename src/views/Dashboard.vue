@@ -80,25 +80,18 @@ export default {
   },
   created() {
     var res = [];
-    axios
-      .get("https://api.covid19api.com/summary")
-      .then((response) => {
-        // handle success
+    axios.get("https://api.covid19api.com/summary").then((response) => {
+      // handle success
 
-        this.showData = true;
-        res = response.data;
-        this.newConfirmedNum = res.Global.NewConfirmed;
-        this.newDeathsNum = res.Global.NewDeaths;
-        this.totalConfirmedNum = res.Global.TotalConfirmed;
-        this.totalDeathsNum = res.Global.TotalDeaths;
-        this.lastUpdated = res.Date;
-        this.getCountries(res.Countries);
-        console.log(res);
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error);
-      });
+      this.showData = true;
+      res = response.data;
+      this.newConfirmedNum = res.Global.NewConfirmed;
+      this.newDeathsNum = res.Global.NewDeaths;
+      this.totalConfirmedNum = res.Global.TotalConfirmed;
+      this.totalDeathsNum = res.Global.TotalDeaths;
+      this.lastUpdated = res.Date;
+      this.getCountries(res.Countries);
+    });
   },
   methods: {
     getCountries(res) {
@@ -115,10 +108,8 @@ export default {
     },
     checkSelected() {
       if (this.selectedCountry === "No") {
-        console.log(this.selectedCountry);
         alert("Please Select a Country.");
       } else {
-        console.log(this.selectedCountry);
         var data = this.selectedCountry.name;
         data = this.convertedCountry(data);
         this.$router.push({

@@ -50,17 +50,11 @@ export default {
     fetchData() {
       var res = [];
       var country = this.$route.params.name;
-      axios
-        .get("https://api.covid19api.com/summary")
-        .then((response) => {
-          this.showData = true;
-          res = response.data.Countries;
-          this.setCountryData(res, country);
-        })
-        .catch((error) => {
-          // handle error
-          console.log(error);
-        });
+      axios.get("https://api.covid19api.com/summary").then((response) => {
+        this.showData = true;
+        res = response.data.Countries;
+        this.setCountryData(res, country);
+      });
     },
     setCountryData(res, country) {
       for (var i = 0; i < 192; i++) {
@@ -72,7 +66,6 @@ export default {
           this.totalDeathsNum = res[i].TotalDeaths;
         }
       }
-      console.log(res);
     },
     buttonClicked() {
       this.$router.push("/");
