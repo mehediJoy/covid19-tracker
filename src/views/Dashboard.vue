@@ -20,11 +20,26 @@
       <form>
         <div class="flex-col">
           <h1 class="text-white text-xl m-3">Select by country</h1>
-          <select id="selCountries" class="form-select mt-1 w-40">
-            <option value="bangladesh">Bangladesh</option>
-            <option value="india">India</option>
-            <option value="china">China</option>
+          <select
+            v-model="selectedCountry"
+            id="selCountries"
+            class="form-select m-5 w-40"
+          >
+            <option
+              v-for="country in countries"
+              :value="country"
+              :key="country.id"
+            >
+              {{ country.name }}
+            </option>
           </select>
+          <router-link
+            :to="{
+              name: 'Country',
+              params: { name: convertedCountry(selectedCountry.name) },
+            }"
+            >Get Data</router-link
+          >
         </div>
       </form>
     </div>
@@ -49,6 +64,8 @@ export default {
       totalConfirmedNum: Number,
       totalDeathsNum: Number,
       lastUpdated: Date,
+      selectedCountry: String,
+      countries: [],
     };
   },
   setup() {
@@ -76,12 +93,27 @@ export default {
         this.totalConfirmedNum = res.Global.TotalConfirmed;
         this.totalDeathsNum = res.Global.TotalDeaths;
         this.lastUpdated = res.Date;
-        console.log(this.lastUpdated);
+        this.getCountries(res.Countries);
+        console.log(res);
       })
       .catch((error) => {
         // handle error
         console.log(error);
       });
+  },
+  methods: {
+    getCountries(res) {
+      var local = [];
+      for (var i = 0; i < 192; i++) {
+        local.push({ id: i, name: res[i].Country });
+      }
+      this.countries = local;
+    },
+    convertedCountry(Text) {
+      return Text.toLowerCase()
+        .replace(/ /g, "-")
+        .replace(/[^\w-]+/g, "");
+    },
   },
 };
 </script>
